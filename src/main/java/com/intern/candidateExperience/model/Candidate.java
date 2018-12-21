@@ -1,19 +1,26 @@
 package com.intern.candidateExperience.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+
+
+@Document(collection = "Candidates")
 public class Candidate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String  id;
 
     private String candidateName;
     private String candidateCompanyName;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Candidate(){
 
@@ -23,13 +30,6 @@ public class Candidate {
         this.candidateCompanyName = candidateCompanyName;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCandidateName() {
         return candidateName;

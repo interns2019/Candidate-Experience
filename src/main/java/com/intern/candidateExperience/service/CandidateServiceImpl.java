@@ -13,16 +13,23 @@ public class CandidateServiceImpl implements CandidateService {
     @Autowired
     private CandidateDao candidateDao;
 
-    private Iterable<Candidate> allCandidates;
+    private List<Candidate> allCandidates;
+
     @Override
-    public Iterable<Candidate> getAllCandidates() {
+    public List<Candidate> getAllCandidates() {
 
         allCandidates = candidateDao.findAll();
         return allCandidates;
     }
 
     @Override
-    public void addCandidateResponse(Candidate candidate) {
-        candidateDao.save(candidate);
+    public void deleteAll() {
+        candidateDao.deleteAll();
+    }
+
+    @Override
+    public void saveAll(List<Candidate> candidates) {
+        candidateDao.saveAll(candidates);
     }
 }
+
