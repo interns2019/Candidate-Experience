@@ -10,9 +10,37 @@ public class Candidate {
 
     @Id
     private String  id;
-
+    private String refId;
     private String candidateName;
     private String candidateCompanyName;
+    private String feedback;
+
+    public Candidate(){
+
+    }
+
+    public Candidate(String refId, String candidateName, String candidateCompanyName, String feedback) {
+        this.refId = refId;
+        this.candidateName = candidateName;
+        this.candidateCompanyName = candidateCompanyName;
+        this.feedback = feedback;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
 
     public String getId() {
         return id;
@@ -22,13 +50,6 @@ public class Candidate {
         this.id = id;
     }
 
-    public Candidate(){
-
-    }
-    public Candidate(String candidateName, String candidateCompanyName) {
-        this.candidateName = candidateName;
-        this.candidateCompanyName = candidateCompanyName;
-    }
 
 
     public String getCandidateName() {

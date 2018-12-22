@@ -11,4 +11,6 @@ public interface CandidateService {
 
     public void saveAll(List<Candidate> candidates);
 
+    public void save(Candidate candidate);
+
 }

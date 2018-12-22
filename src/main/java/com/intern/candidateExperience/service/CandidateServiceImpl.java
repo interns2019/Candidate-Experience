@@ -31,5 +31,12 @@ public class CandidateServiceImpl implements CandidateService {
     public void saveAll(List<Candidate> candidates) {
         candidateDao.saveAll(candidates);
     }
+
+    @Override
+    public void save(Candidate candidate) {
+        candidateDao.save(candidate);
+    }
+
+
 }
 

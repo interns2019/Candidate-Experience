@@ -16,8 +16,8 @@ public class DbSeeder implements CommandLineRunner {
     public CandidateService candidateService;
     @Override
     public void run(String... args) throws Exception {
-        Candidate c1 = new Candidate("Amaan","XYZ");
-        Candidate c2 = new Candidate("Akshay","ABC");
+        Candidate c1 = new Candidate("ASD","Amaan","XYZ","Acha Feedback");
+        Candidate c2 = new Candidate("WER","Akshay","ABC","Kaafi Feedback");
 
         //Drop All Hotel
         candidateService.deleteAll();
