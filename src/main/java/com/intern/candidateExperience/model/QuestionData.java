@@ -3,18 +3,16 @@ package com.intern.candidateExperience.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-public class Question {
-
+@Document(collection = "QuestionsData")
+public class QuestionData {
     @Id
     private String id;
     private String questionNo;
     private String questionName;
-    private int questionRating;
 
-    public Question(String questionNo, String questionName, int questionRating) {
+    public QuestionData(String questionNo, String questionName) {
         this.questionNo = questionNo;
         this.questionName = questionName;
-        this.questionRating = questionRating;
     }
 
     public String getId() {
@@ -40,13 +38,5 @@ public class Question {
     public void setQuestionName(String questionName) {
         this.questionName = questionName;
     }
-
-    public int getQuestionRating() {
-        return questionRating;
-    }
-
-    public void setQuestionRating(int questionRating) {
-        this.questionRating = questionRating;
-    }
-
 }
+

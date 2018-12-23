@@ -3,6 +3,8 @@ package com.intern.candidateExperience.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+import java.util.List;
 
 
 @Document(collection = "Candidates")
@@ -10,35 +12,16 @@ public class Candidate {
 
     @Id
     private String  id;
-    private String refId;
-    private String candidateName;
-    private String candidateCompanyName;
+    private List<Question> questionsAttempted;
+    private java.util.Date date;
     private String feedback;
-
     public Candidate(){
 
     }
 
-    public Candidate(String refId, String candidateName, String candidateCompanyName, String feedback) {
-        this.refId = refId;
-        this.candidateName = candidateName;
-        this.candidateCompanyName = candidateCompanyName;
-        this.feedback = feedback;
-    }
-
-    public String getRefId() {
-        return refId;
-    }
-
-    public void setRefId(String refId) {
-        this.refId = refId;
-    }
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String feedback) {
+    public Candidate(List<Question> questionsAttempted, java.util.Date date, String feedback) {
+        this.questionsAttempted = questionsAttempted;
+        this.date = date;
         this.feedback = feedback;
     }
 
@@ -50,21 +33,27 @@ public class Candidate {
         this.id = id;
     }
 
-
-
-    public String getCandidateName() {
-        return candidateName;
+    public List<Question> getQuestionsAttempted() {
+        return questionsAttempted;
     }
 
-    public void setCandidateName(String candidateName) {
-        this.candidateName = candidateName;
+    public void setQuestionsAttempted(List<Question> questionsAttempted) {
+        this.questionsAttempted = questionsAttempted;
     }
 
-    public String getCandidateCompanyName() {
-        return candidateCompanyName;
+    public String getFeedback() {
+        return feedback;
     }
 
-    public void setCandidateCompanyName(String candidateCompanyName) {
-        this.candidateCompanyName = candidateCompanyName;
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
