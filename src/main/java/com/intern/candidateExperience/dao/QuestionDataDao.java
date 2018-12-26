@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QuestionDataDao extends MongoRepository<QuestionData,String> {
+    long count();
 }

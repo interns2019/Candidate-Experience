@@ -7,14 +7,24 @@ public class Question {
 
     @Id
     private String id;
-    private String questionNo;
+    private int questionNo;
     private String questionName;
     private int questionRating;
+    private String questionOverall;
 
-    public Question(String questionNo, String questionName, int questionRating) {
+    public Question(int questionNo, String questionName, int questionRating, String questionOverall) {
         this.questionNo = questionNo;
         this.questionName = questionName;
         this.questionRating = questionRating;
+        this.questionOverall = questionOverall;
+    }
+
+    public String getQuestionOverall() {
+        return questionOverall;
+    }
+
+    public void setQuestionOverall(String questionOverall) {
+        this.questionOverall = questionOverall;
     }
 
     public String getId() {
@@ -25,11 +35,11 @@ public class Question {
         this.id = id;
     }
 
-    public String getQuestionNo() {
+    public int getQuestionNo() {
         return questionNo;
     }
 
-    public void setQuestionNo(String questionNo) {
+    public void setQuestionNo(int questionNo) {
         this.questionNo = questionNo;
     }
 

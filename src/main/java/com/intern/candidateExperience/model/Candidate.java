@@ -3,7 +3,8 @@ package com.intern.candidateExperience.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -13,13 +14,13 @@ public class Candidate {
     @Id
     private String  id;
     private List<Question> questionsAttempted;
-    private java.util.Date date;
+    private LocalDate date;
     private String feedback;
     public Candidate(){
 
     }
 
-    public Candidate(List<Question> questionsAttempted, java.util.Date date, String feedback) {
+    public Candidate(List<Question> questionsAttempted, LocalDate date, String feedback) {
         this.questionsAttempted = questionsAttempted;
         this.date = date;
         this.feedback = feedback;
@@ -49,11 +50,11 @@ public class Candidate {
         this.feedback = feedback;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }
