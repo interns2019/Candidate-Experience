@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +41,6 @@ public class CandidateController {
     @Autowired
     private QuestionDataDao questionDataDao;
 
-
-
     @GetMapping("/all")
     public List<Candidate> getAllCandidates(){
         return candidateService.getAllCandidates();
@@ -56,14 +55,44 @@ public class CandidateController {
 
     @GetMapping("/range")
     public HashMap<Integer,Double> findByRange(){
+        refresh();
         List<Candidate> candidatesFilter = candidateDao.findBetweenRangeOfDate(ld1,ld2);
         HashMap<Integer,Double> answer = avgAnalysis(candidatesFilter);
         return answer;
     }
 
-    public HashMap<Integer,Double> avgAnalysis(List<Candidate> candidates1){
+    @GetMapping("/year")
+    public HashMap<Integer,HashMap<Integer,Double>>getByYear(){
+        refresh();
+        HashMap<Integer,HashMap<Integer,Double>> yearAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();
+        for(int i=2017;i<=2019;i++){
+            List<Candidate> candidatesFilterByYear = candidateDao.findByYear(i);
+            //this.candidatesMain = inSync(candidatesFilterByYear);
+            HashMap<Integer,Double> questionAverage  = avgAnalysis(candidatesFilterByYear);
+            yearAnalysis.put(i,questionAverage);
+        }
+//        List<Candidate> candidatesFilterByYear = candidateDao.findByYear(2018);
+//        HashMap<Integer,Double> questionAverage  = avgAnalysis(candidatesFilterByYear);
+        return yearAnalysis;
 
-        List<Candidate> candidates = inSync(candidates1);
+    }
+
+    @GetMapping("/month")
+    public HashMap<Integer,HashMap<Integer,Double>>getByMonth(){
+        refresh();
+        HashMap<Integer,HashMap<Integer,Double>> monthAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();
+        for(int i=1;i<=12;i++){
+            List<Candidate> candidatesFilterByMonth = candidateDao.findByMonth(i);
+            HashMap<Integer,Double> questionAverage  = avgAnalysis(candidatesFilterByMonth);
+            monthAnalysis.put(i,questionAverage);
+        }
+
+        return monthAnalysis;
+    }
+
+    public HashMap<Integer,Double> avgAnalysis(List<Candidate> candidates){
+
+//        List<Candidate> candidates = inSync(candidates1);
         HashMap<Integer, Double> questionAverage = new HashMap<>();
 
         //Candidate[] candidateArray = candidates.toArray(new Candidate[candidates.size()]);
@@ -75,7 +104,7 @@ public class CandidateController {
         }
         //candidateArray = (Candidate[])candidates.toArray();
 
-        //Length of Filtered Candidate List based on Date range
+        //Length of Filtered Candidate List based on DateAdded range
         int len = candidateArray.length;
 
         //Number of questions in the DB
@@ -131,4 +160,7 @@ public class CandidateController {
         return candidateService.getAllCandidates();
     }
 
+    public void refresh(){
+        inSync(candidateService.getAllCandidates());
+    }
 }

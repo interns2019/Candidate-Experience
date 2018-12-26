@@ -3,7 +3,6 @@ package com.intern.candidateExperience.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,14 +13,17 @@ public class Candidate {
     @Id
     private String  id;
     private List<Question> questionsAttempted;
-    private LocalDate date;
+    private LocalDate localDate;
+    private DateAdded date;
     private String feedback;
     public Candidate(){
 
     }
 
-    public Candidate(List<Question> questionsAttempted, LocalDate date, String feedback) {
+
+    public Candidate(List<Question> questionsAttempted, LocalDate localDate, DateAdded date, String feedback) {
         this.questionsAttempted = questionsAttempted;
+        this.localDate = localDate;
         this.date = date;
         this.feedback = feedback;
     }
@@ -50,11 +52,19 @@ public class Candidate {
         this.feedback = feedback;
     }
 
-    public LocalDate getDate() {
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDated) {
+        this.localDate = localDate;
+    }
+
+    public DateAdded getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(DateAdded date) {
         this.date = date;
     }
 }

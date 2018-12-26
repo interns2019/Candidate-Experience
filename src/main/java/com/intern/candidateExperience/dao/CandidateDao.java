@@ -15,4 +15,10 @@ public interface CandidateDao extends MongoRepository<Candidate,String> {
     @Query("{'date':{$gte: ?0,$lte: ?1}}")
     List<Candidate> findBetweenRangeOfDate(LocalDate startRange, LocalDate endRange);
 
+    @Query("{'date.year':?0}")
+    List<Candidate> findByYear(int year);
+
+    @Query("{'date.month':?0}")
+    List<Candidate> findByMonth(int month);
+
 }
