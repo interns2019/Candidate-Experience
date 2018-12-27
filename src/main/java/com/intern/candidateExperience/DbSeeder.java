@@ -91,9 +91,9 @@ public class DbSeeder implements CommandLineRunner {
         questionDataService.deleteAll();
 
         //add our entries to the database
-        List<Candidate> candidates = Arrays.asList(c1,c3,c4,c5,c6,c2,c7,c8,c9,c10);
-        List<QuestionData> questionDataList = Arrays.asList(qd1,qd2,qd3,qd4,qd5);
-        candidateService.saveAll(candidates);
-        questionDataService.saveAll(questionDataList);
+//        List<Candidate> candidates = Arrays.asList(c1,c3,c4,c5,c6,c2,c7,c8,c9,c10);
+//        List<QuestionData> questionDataList = Arrays.asList(qd1,qd2,qd3,qd4,qd5);
+//        candidateService.saveAll(candidates);
+//        questionDataService.saveAll(questionDataList);
     }
 }

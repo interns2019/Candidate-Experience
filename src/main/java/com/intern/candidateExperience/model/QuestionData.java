@@ -11,6 +11,7 @@ public class QuestionData {
     private int questionNo;
     private String questionName;
 
+    public QuestionData(){}
     public QuestionData(int questionNo, String questionName) {
         this.questionNo = questionNo;
         this.questionName = questionName;

@@ -5,6 +5,9 @@ public class DateAdded {
     private int month;
     private long year;
 
+    public DateAdded(){
+
+    }
     public DateAdded(int day, int month, long year) {
         this.day = day;
         this.month = month;

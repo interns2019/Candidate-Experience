@@ -3,6 +3,7 @@ package com.intern.candidateExperience.controller;
 import com.intern.candidateExperience.dao.CandidateDao;
 import com.intern.candidateExperience.dao.QuestionDataDao;
 import com.intern.candidateExperience.model.Candidate;
+import com.intern.candidateExperience.model.DateAdded;
 import com.intern.candidateExperience.model.Question;
 import com.intern.candidateExperience.model.QuestionData;
 import com.intern.candidateExperience.service.CandidateService;
@@ -49,6 +50,12 @@ public class CandidateController {
 
     @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     public Candidate insert(@RequestBody Candidate candidate){
+        LocalDate localDate = LocalDate.parse( candidate.getDateString() , f ) ;
+
+        candidate.setLocalDate(localDate);
+        DateAdded dateAdded =  new DateAdded(localDate.getDayOfMonth(),localDate.getMonthValue(),localDate.getYear());
+        candidate.setDate(dateAdded);
+
        candidateService.save(candidate);
        return candidate;
     }
@@ -61,7 +68,7 @@ public class CandidateController {
         return answer;
     }
 
-    @GetMapping("/year")
+    @GetMapping("/yearly")
     public HashMap<Integer,HashMap<Integer,Double>>getByYear(){
         refresh();
         HashMap<Integer,HashMap<Integer,Double>> yearAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();
@@ -77,7 +84,7 @@ public class CandidateController {
 
     }
 
-    @GetMapping("/month")
+    @GetMapping("/monthly")
     public HashMap<Integer,HashMap<Integer,Double>>getByMonth(){
         refresh();
         HashMap<Integer,HashMap<Integer,Double>> monthAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();

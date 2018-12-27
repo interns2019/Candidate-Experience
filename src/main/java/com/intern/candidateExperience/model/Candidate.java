@@ -14,6 +14,7 @@ public class Candidate {
     private String  id;
     private List<Question> questionsAttempted;
     private LocalDate localDate;
+    private String dateString;
     private DateAdded date;
     private String feedback;
     public Candidate(){
@@ -24,6 +25,15 @@ public class Candidate {
     public Candidate(List<Question> questionsAttempted, LocalDate localDate, DateAdded date, String feedback) {
         this.questionsAttempted = questionsAttempted;
         this.localDate = localDate;
+        this.date = date;
+        this.feedback = feedback;
+    }
+
+    public Candidate(String id, List<Question> questionsAttempted, LocalDate localDate, String dateString, DateAdded date, String feedback) {
+        this.id = id;
+        this.questionsAttempted = questionsAttempted;
+        this.localDate = localDate;
+        this.dateString = dateString;
         this.date = date;
         this.feedback = feedback;
     }
@@ -56,7 +66,7 @@ public class Candidate {
         return localDate;
     }
 
-    public void setLocalDate(LocalDate localDated) {
+    public void setLocalDate(LocalDate localDate) {
         this.localDate = localDate;
     }
 
@@ -66,5 +76,13 @@ public class Candidate {
 
     public void setDate(DateAdded date) {
         this.date = date;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
     }
 }

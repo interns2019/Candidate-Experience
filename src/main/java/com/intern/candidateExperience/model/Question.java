@@ -10,6 +10,9 @@ public class Question {
     private int questionRating;
     private String questionOverall;
 
+    public Question(){
+
+    }
     public Question(int questionNo, String questionName, int questionRating, String questionOverall) {
         this.questionNo = questionNo;
         this.questionName = questionName;
