@@ -21,4 +21,7 @@ public interface CandidateDao extends MongoRepository<Candidate,String> {
     @Query("{'date.month':?0}")
     List<Candidate> findByMonth(int month);
 
+    @Query("{$and:[{'date.year':?0},{'date.month':?1}]}")
+    List<Candidate> findByYearAndMonth(int year, int month);
+
 }

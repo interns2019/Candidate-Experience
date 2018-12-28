@@ -10,11 +10,21 @@ public class QuestionData {
     private String id;
     private int questionNo;
     private String questionName;
+    private boolean visible;
 
     public QuestionData(){}
-    public QuestionData(int questionNo, String questionName) {
+    public QuestionData(int questionNo, String questionName, boolean visible) {
         this.questionNo = questionNo;
         this.questionName = questionName;
+        this.visible = visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public String getId() {

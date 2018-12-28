@@ -8,24 +8,26 @@ public class Question {
     private int questionNo;
     private String questionName;
     private int questionRating;
-    private String questionOverall;
+    private boolean visible;
+
 
     public Question(){
 
     }
-    public Question(int questionNo, String questionName, int questionRating, String questionOverall) {
+
+    public Question(int questionNo, String questionName, int questionRating, boolean visible) {
         this.questionNo = questionNo;
         this.questionName = questionName;
         this.questionRating = questionRating;
-        this.questionOverall = questionOverall;
+        this.visible = visible;
     }
 
-    public String getQuestionOverall() {
-        return questionOverall;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setQuestionOverall(String questionOverall) {
-        this.questionOverall = questionOverall;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public int getQuestionNo() {

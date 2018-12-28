@@ -52,17 +52,17 @@ public class DbSeeder implements CommandLineRunner {
         LocalDate ld9 = LocalDate.parse( input5 , f ) ;
         LocalDate ld10 = LocalDate.parse( input6 , f ) ;
 
-        Question q1 = new Question(1,"How was the interview",6,"Excellent");
-        Question q2 = new Question(2,"Was it helpful",9,"Outstanding");
-        Question q3 = new Question(1,"How was the interview",5,"Excellent");
-        Question q4 = new Question(2,"Was it helpful",8,"Outstanding");
-        Question q5 = new Question(1,"How was the interview",7,"Excellent");
-        Question q6 = new Question(2,"Was it helpful",8,"Outstanding");
-        Question q7 = new Question(3,"are you happy",8,"Outstanding");
-        Question q8 = new Question(4,"Was it nice",8,"Outstanding");
-        Question q9 = new Question(3,"are you happy",5,"Outstanding");
-        Question q10 = new Question(4,"Was it nice",4,"Outstanding");
-        Question q11 = new Question(5,"What's your name??",10,"Good");
+        Question q1 = new Question(1,"How was the interview",6,true);
+        Question q2 = new Question(2,"Was it helpful",9,true);
+        Question q3 = new Question(1,"How was the interview",5,true);
+        Question q4 = new Question(2,"Was it helpful",8,true);
+        Question q5 = new Question(1,"How was the interview",7,true);
+        Question q6 = new Question(2,"Was it helpful",8,true);
+        Question q7 = new Question(3,"are you happy",8,true);
+        Question q8 = new Question(4,"Was it nice",8,true);
+        Question q9 = new Question(3,"are you happy",5,true);
+        Question q10 = new Question(4,"Was it nice",4,true);
+        Question q11 = new Question(5,"What's your name??",10,true);
         List<Question> qList1 = Arrays.asList(q1,q2);
         List<Question> qList2 = Arrays.asList(q3,q4,q7,q8);
         List<Question> qList3 = Arrays.asList(q5,q6,q9,q10);
@@ -80,20 +80,20 @@ public class DbSeeder implements CommandLineRunner {
         Candidate c9 = new Candidate(qList5,ld9.plusDays(1),new DateAdded(ld9.plusDays(1).getDayOfMonth(),ld9.plusDays(1).getMonthValue(),ld9.plusDays(1).getYear()),"4 Feedback");
         Candidate c10 = new Candidate(qlist4,ld10.plusDays(1),new DateAdded(ld10.plusDays(1).getDayOfMonth(),ld10.plusDays(1).getMonthValue(),ld10.plusDays(1).getYear()),"4 Feedback");
 
-        QuestionData qd1 = new QuestionData(1,"How was the interview");
-        QuestionData qd2 = new QuestionData(2,"Was it helpful");
-        QuestionData qd3 = new QuestionData(3,"are you happy");
-        QuestionData qd4 = new QuestionData(4,"Was it nice");
-        QuestionData qd5 = new QuestionData(5,"What's your name??");
+        QuestionData qd1 = new QuestionData(1,"How was the interview",true);
+        QuestionData qd2 = new QuestionData(2,"Was it helpful",true);
+        QuestionData qd3 = new QuestionData(3,"Are you happy",true);
+        QuestionData qd4 = new QuestionData(4,"Was it nice",true);
+        QuestionData qd5 = new QuestionData(5,"What's your name??",true);
 
         //Drop All Entries
         candidateService.deleteAll();
         questionDataService.deleteAll();
 
         //add our entries to the database
-//        List<Candidate> candidates = Arrays.asList(c1,c3,c4,c5,c6,c2,c7,c8,c9,c10);
-//        List<QuestionData> questionDataList = Arrays.asList(qd1,qd2,qd3,qd4,qd5);
-//        candidateService.saveAll(candidates);
-//        questionDataService.saveAll(questionDataList);
+        List<Candidate> candidates = Arrays.asList(c1,c3,c4,c5,c6,c2,c7,c8,c9,c10);
+        List<QuestionData> questionDataList = Arrays.asList(qd1,qd2,qd3,qd4,qd5);
+        candidateService.saveAll(candidates);
+        questionDataService.saveAll(questionDataList);
     }
 }

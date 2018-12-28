@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -51,10 +48,24 @@ public class CandidateController {
     @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     public Candidate insert(@RequestBody Candidate candidate){
         LocalDate localDate = LocalDate.parse( candidate.getDateString() , f ) ;
+        Question sampleQuestion = new Question();
+        List<Question> sampleCandidate = candidate.getQuestionsAttempted();
+        int len = sampleCandidate.size();
 
         candidate.setLocalDate(localDate);
         DateAdded dateAdded =  new DateAdded(localDate.getDayOfMonth(),localDate.getMonthValue(),localDate.getYear());
         candidate.setDate(dateAdded);
+
+//       for(int i=0;i<len-1;i++){
+//           if(sampleCandidate.get(i+1).getQuestionNo() - sampleCandidate.get(i).getQuestionNo() != 1){
+//               sampleQuestion.setQuestionNo(sampleCandidate.get(i).getQuestionNo() + 1);
+//               sampleQuestion.setQuestionName(null);
+//               sampleQuestion.setQuestionRating(0);
+//               sampleQuestion.setQuestionOverall("");
+//           }
+//       }
+//        sampleCandidate.add(sampleQuestion.getQuestionNo()-1,sampleQuestion);
+//       candidate.setQuestionsAttempted(sampleCandidate);
 
        candidateService.save(candidate);
        return candidate;
@@ -71,8 +82,10 @@ public class CandidateController {
     @GetMapping("/yearly")
     public HashMap<Integer,HashMap<Integer,Double>>getByYear(){
         refresh();
+
+        Date date = new Date();
         HashMap<Integer,HashMap<Integer,Double>> yearAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();
-        for(int i=2017;i<=2019;i++){
+        for(int i = 2017; i<=2019; i++){
             List<Candidate> candidatesFilterByYear = candidateDao.findByYear(i);
             //this.candidatesMain = inSync(candidatesFilterByYear);
             HashMap<Integer,Double> questionAverage  = avgAnalysis(candidatesFilterByYear);
@@ -95,6 +108,19 @@ public class CandidateController {
         }
 
         return monthAnalysis;
+    }
+
+    @GetMapping("/monthly/{year}")
+    public HashMap<Integer,HashMap<Integer,Double>> getByMonthAndMonthAndYear(@PathVariable int year){
+        refresh();
+        HashMap<Integer,HashMap<Integer,Double>> monthAndYearAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();
+        for(int i=1;i<=12;i++){
+            List<Candidate> candidatesFilterByYearAndMonth = candidateDao.findByYearAndMonth(year,i);
+            HashMap<Integer,Double> questionAverage  = avgAnalysis(candidatesFilterByYearAndMonth);
+           monthAndYearAnalysis.put(i,questionAverage);
+        }
+
+       return monthAndYearAnalysis;
     }
 
     public HashMap<Integer,Double> avgAnalysis(List<Candidate> candidates){
@@ -157,7 +183,7 @@ public class CandidateController {
 
             for(long j=count; j<currentCount;j++){
                 if(j>=count) {
-                    Question sampleQuestion = new Question((int)(j+1),"",0,"");
+                    Question sampleQuestion = new Question((int)(j+1),"",0,true);
                     candidate.getQuestionsAttempted().add(sampleQuestion);
                     candidateService.save(candidate);
                 }
