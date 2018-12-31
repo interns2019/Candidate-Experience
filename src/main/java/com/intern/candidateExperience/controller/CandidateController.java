@@ -18,7 +18,6 @@ import java.util.*;
 
 
 @RestController
-@RequestMapping("/feedback")
 //@CrossOrigin(origins = "http://localhost:4200")
 public class CandidateController {
 
@@ -39,13 +38,13 @@ public class CandidateController {
     @Autowired
     private QuestionDataDao questionDataDao;
 
-    @GetMapping("/all")
+    @GetMapping("feedback/all")
     public List<Candidate> getAllCandidates(){
         return candidateService.getAllCandidates();
     }
 
 
-    @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/feedback", produces= MediaType.APPLICATION_JSON_VALUE)
     public Candidate insert(@RequestBody Candidate candidate){
         LocalDate localDate = LocalDate.parse( candidate.getDateString() , f ) ;
         Question sampleQuestion = new Question();
@@ -71,7 +70,7 @@ public class CandidateController {
        return candidate;
     }
 
-    @GetMapping("/range")
+    @GetMapping("/analysis/range")
     public HashMap<Integer,Double> findByRange(){
         refresh();
         List<Candidate> candidatesFilter = candidateDao.findBetweenRangeOfDate(ld1,ld2);
@@ -79,7 +78,7 @@ public class CandidateController {
         return answer;
     }
 
-    @GetMapping("/yearly")
+    @GetMapping("/analysis/yearly")
     public HashMap<Integer,HashMap<Integer,Double>>getByYear(){
         refresh();
 
@@ -97,7 +96,7 @@ public class CandidateController {
 
     }
 
-    @GetMapping("/monthly")
+    @GetMapping("/analysis/monthly")
     public HashMap<Integer,HashMap<Integer,Double>>getByMonth(){
         refresh();
         HashMap<Integer,HashMap<Integer,Double>> monthAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();
@@ -110,7 +109,7 @@ public class CandidateController {
         return monthAnalysis;
     }
 
-    @GetMapping("/monthly/{year}")
+    @GetMapping("/analysis/monthly/{year}")
     public HashMap<Integer,HashMap<Integer,Double>> getByMonthAndMonthAndYear(@PathVariable int year){
         refresh();
         HashMap<Integer,HashMap<Integer,Double>> monthAndYearAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();

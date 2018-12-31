@@ -1,13 +1,12 @@
 package com.intern.candidateExperience;
 
-import com.intern.candidateExperience.model.Candidate;
-import com.intern.candidateExperience.model.DateAdded;
-import com.intern.candidateExperience.model.Question;
-import com.intern.candidateExperience.model.QuestionData;
+import com.intern.candidateExperience.model.*;
 import com.intern.candidateExperience.service.CandidateService;
 import com.intern.candidateExperience.service.QuestionDataService;
+import com.intern.candidateExperience.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -25,8 +24,14 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     private QuestionDataService questionDataService;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public void run(String... args) throws Exception {
+
+        User user1 = new User("Amaan","ASD","ROLE_USER");
+        User user2 = new User("admin","admin","ROLE_ADMIN");
 
         String input1 = "2018-08-16" ;
         String input2 = "2018-08-16" ;
@@ -89,11 +94,14 @@ public class DbSeeder implements CommandLineRunner {
         //Drop All Entries
         candidateService.deleteAll();
         questionDataService.deleteAll();
+        userService.deleteAll();
 
         //add our entries to the database
         List<Candidate> candidates = Arrays.asList(c1,c3,c4,c5,c6,c2,c7,c8,c9,c10);
         List<QuestionData> questionDataList = Arrays.asList(qd1,qd2,qd3,qd4,qd5);
         candidateService.saveAll(candidates);
         questionDataService.saveAll(questionDataList);
+        userService.save(user1);
+        userService.save(user2);
     }
 }
