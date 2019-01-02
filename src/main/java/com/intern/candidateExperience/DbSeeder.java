@@ -6,7 +6,6 @@ import com.intern.candidateExperience.service.QuestionDataService;
 import com.intern.candidateExperience.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -30,7 +29,7 @@ public class DbSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User user1 = new User("Amaan","ASD","ROLE_USER");
+        User user1 = new User("a","a","ROLE_USER");
         User user2 = new User("admin","admin","ROLE_ADMIN");
 
         String input1 = "2018-08-16" ;

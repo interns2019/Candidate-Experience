@@ -1,17 +1,24 @@
 package com.intern.candidateExperience.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.intern.candidateExperience.dao.CandidateDao;
 import com.intern.candidateExperience.dao.QuestionDataDao;
-import com.intern.candidateExperience.model.Candidate;
-import com.intern.candidateExperience.model.DateAdded;
-import com.intern.candidateExperience.model.Question;
-import com.intern.candidateExperience.model.QuestionData;
+import com.intern.candidateExperience.dao.UserDao;
+import com.intern.candidateExperience.model.*;
 import com.intern.candidateExperience.service.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -38,39 +45,42 @@ public class CandidateController {
     @Autowired
     private QuestionDataDao questionDataDao;
 
-    @GetMapping("feedback/all")
+    @Autowired
+    private UserDao userDao;
+
+    @RequestMapping(value = "/feedback/all",method = RequestMethod.GET)
     public List<Candidate> getAllCandidates(){
         return candidateService.getAllCandidates();
     }
 
+    @RequestMapping(value = "/feedback", method = RequestMethod.POST,produces= MediaType.APPLICATION_JSON_VALUE)
+    public Candidate insert(@RequestBody Candidate candidate, ServletRequest request, ServletResponse response){
 
-    @PostMapping(value = "/feedback", produces= MediaType.APPLICATION_JSON_VALUE)
-    public Candidate insert(@RequestBody Candidate candidate){
-        LocalDate localDate = LocalDate.parse( candidate.getDateString() , f ) ;
-        Question sampleQuestion = new Question();
-        List<Question> sampleCandidate = candidate.getQuestionsAttempted();
-        int len = sampleCandidate.size();
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        boolean check = false;
+        String t = httpRequest.getHeader("Authorization");
+        if(t != null){
+            String token = t.split(" ")[1];
+             check = verifyToken(token);
+        }
+        if(check){
+            LocalDate localDate = LocalDate.parse( candidate.getDateString() , f ) ;
+            Question sampleQuestion = new Question();
+            List<Question> sampleCandidate = candidate.getQuestionsAttempted();
+            int len = sampleCandidate.size();
 
-        candidate.setLocalDate(localDate);
-        DateAdded dateAdded =  new DateAdded(localDate.getDayOfMonth(),localDate.getMonthValue(),localDate.getYear());
-        candidate.setDate(dateAdded);
+            candidate.setLocalDate(localDate);
+            DateAdded dateAdded =  new DateAdded(localDate.getDayOfMonth(),localDate.getMonthValue(),localDate.getYear());
+            candidate.setDate(dateAdded);
 
-//       for(int i=0;i<len-1;i++){
-//           if(sampleCandidate.get(i+1).getQuestionNo() - sampleCandidate.get(i).getQuestionNo() != 1){
-//               sampleQuestion.setQuestionNo(sampleCandidate.get(i).getQuestionNo() + 1);
-//               sampleQuestion.setQuestionName(null);
-//               sampleQuestion.setQuestionRating(0);
-//               sampleQuestion.setQuestionOverall("");
-//           }
-//       }
-//        sampleCandidate.add(sampleQuestion.getQuestionNo()-1,sampleQuestion);
-//       candidate.setQuestionsAttempted(sampleCandidate);
-
-       candidateService.save(candidate);
-       return candidate;
+            candidateService.save(candidate);
+            return candidate;
+        }
+        return null;
     }
 
-    @GetMapping("/analysis/range")
+    @RequestMapping(value = "/analysis/range", method = RequestMethod.GET)
     public HashMap<Integer,Double> findByRange(){
         refresh();
         List<Candidate> candidatesFilter = candidateDao.findBetweenRangeOfDate(ld1,ld2);
@@ -78,7 +88,7 @@ public class CandidateController {
         return answer;
     }
 
-    @GetMapping("/analysis/yearly")
+    @RequestMapping(value = "/analysis/yearly", method = RequestMethod.GET)
     public HashMap<Integer,HashMap<Integer,Double>>getByYear(){
         refresh();
 
@@ -96,7 +106,7 @@ public class CandidateController {
 
     }
 
-    @GetMapping("/analysis/monthly")
+    @RequestMapping(value = "/analysis/monthly", method = RequestMethod.GET)
     public HashMap<Integer,HashMap<Integer,Double>>getByMonth(){
         refresh();
         HashMap<Integer,HashMap<Integer,Double>> monthAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();
@@ -109,7 +119,7 @@ public class CandidateController {
         return monthAnalysis;
     }
 
-    @GetMapping("/analysis/monthly/{year}")
+    @RequestMapping(value = "/analysis/monthly/{year}", method = RequestMethod.GET)
     public HashMap<Integer,HashMap<Integer,Double>> getByMonthAndMonthAndYear(@PathVariable int year){
         refresh();
         HashMap<Integer,HashMap<Integer,Double>> monthAndYearAnalysis = new  HashMap<Integer,HashMap<Integer,Double>>();
@@ -194,5 +204,34 @@ public class CandidateController {
 
     public void refresh(){
         inSync(candidateService.getAllCandidates());
+    }
+
+    public boolean verifyToken(String token){
+            if(token != null){
+                try {
+                    Algorithm algorithm = Algorithm.HMAC256("secret");
+                    JWTVerifier verifier = JWT.require(algorithm)
+                            .withIssuer("auth0")
+                            .build(); //Reusable verifier instance
+                    DecodedJWT jwt = verifier.verify(token);
+                    String uid = jwt.getSubject();
+
+                    Optional userOpt = userDao.findById(uid);
+                    User user = (User)userOpt.get();
+
+                    if(user != null){
+                        return true;
+                    }else{
+                        return false;
+                    }
+
+                } catch (JWTVerificationException exception){
+                    //Invalid signature/claims
+                }
+            }else{
+                return false;
+            }
+
+            return false;
     }
 }
